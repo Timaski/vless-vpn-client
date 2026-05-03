@@ -131,4 +131,25 @@ public partial class MainWindow : Window
             App.MainVm.ConnectCommand.Execute(null);
         }
     }
+
+    private void OnHeroToggleClick(object? sender, RoutedEventArgs e)
+    {
+        if (App.ConnectionManager.IsConnected)
+        {
+            if (App.MainVm.DisconnectCommand.CanExecute(null))
+            {
+                App.MainVm.DisconnectCommand.Execute(null);
+            }
+            return;
+        }
+
+        if (App.MainVm.SelectedProfile is null && App.MainVm.Profiles.Count > 0)
+        {
+            App.MainVm.SelectedProfile = App.MainVm.Profiles[0];
+        }
+        if (App.MainVm.ConnectCommand.CanExecute(null))
+        {
+            App.MainVm.ConnectCommand.Execute(null);
+        }
+    }
 }

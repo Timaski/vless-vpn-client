@@ -27,6 +27,7 @@ public sealed class MainViewModel : ObservableObject
 
     public AppSettings Settings => _settingsStore.Current;
     public ConnectionManager Connection => _connectionManager;
+    public bool HasNoProfiles => Profiles.Count == 0;
 
     private ServerProfileViewModel? _selectedProfile;
     public ServerProfileViewModel? SelectedProfile
@@ -95,6 +96,7 @@ public sealed class MainViewModel : ObservableObject
         RefreshSubscriptionsCommand = new AsyncRelayCommand(RefreshSubscriptionsAsync);
 
         _connectionManager.PropertyChanged += (_, _) => StatusMessage = _connectionManager.StatusMessage;
+        Profiles.CollectionChanged += (_, _) => RaisePropertyChanged(nameof(HasNoProfiles));
     }
 
     private async Task ConnectAsync()

@@ -16,6 +16,7 @@
             <conv:NullToBoolConverter x:Key="NotNullToBool" Invert="False" />
             <conv:LatencyToBrushConverter x:Key="LatencyToBrush" />
             <conv:ConnectionStatusBrushConverter x:Key="ConnectionStatusBrush" />
+            <conv:ConnectionStatusTextConverter x:Key="ConnectionStatusText" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
