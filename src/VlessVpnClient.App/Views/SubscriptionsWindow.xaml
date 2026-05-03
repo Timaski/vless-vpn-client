@@ -1,0 +1,67 @@
+<Window x:Class="VlessVpnClient.App.Views.SubscriptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TYU HUB :: ПОДПИСКИ"
+        Width="780" Height="480"
+        Background="{DynamicResource BackgroundBrush}"
+        Foreground="{DynamicResource ForegroundBrush}"
+        FontFamily="{DynamicResource MonoFont}"
+        FontSize="13"
+        WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource AccentBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="20,14">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource PromptText}" Text="&gt; " />
+                    <TextBlock Style="{StaticResource HeaderText}" FontSize="18" Text="ПОДПИСКИ" />
+                </StackPanel>
+                <TextBlock Style="{StaticResource MutedText}" Margin="0,4,0,0"
+                           Text="// удаление подписки уберёт добавленные через неё серверы" />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Margin="20"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                Padding="0">
+            <DataGrid x:Name="SubsGrid"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="НАЗВАНИЕ" Binding="{Binding Name}" Width="*" />
+                    <DataGridTextColumn Header="URL" Binding="{Binding Url}" Width="2*" />
+                    <DataGridTextColumn Header="СЕРВЕРОВ" Binding="{Binding LastFetchedCount}" Width="120" />
+                    <DataGridTextColumn Header="ОБНОВЛЕНО" Binding="{Binding LastUpdated, StringFormat=g}" Width="160" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Border Grid.Row="2"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource AccentBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="20,14">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource DangerButton}" Click="Remove_Click"
+                        MinWidth="120" Margin="0,0,8,0" Content="[ УДАЛИТЬ ]" />
+                <Button Style="{StaticResource PrimaryButton}" Click="Close_Click"
+                        MinWidth="120" Content="[ ЗАКРЫТЬ ]" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

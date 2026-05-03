@@ -1,0 +1,68 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore VlessVpnClient.sln
+
+      - name: Build (Release)
+        run: dotnet build VlessVpnClient.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test tests/VlessVpnClient.Core.Tests/VlessVpnClient.Core.Tests.csproj --configuration Release --no-build --verbosity normal
+
+      - name: Publish app (single-file, win-x64)
+        run: >-
+          dotnet publish src/VlessVpnClient.App/VlessVpnClient.App.csproj
+          --configuration Release
+          --runtime win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:DebugType=embedded
+          -o publish/VlessVpnClient
+
+      - name: Upload published app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vless-vpn-client-app-win-x64
+          path: publish/VlessVpnClient/
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $iss = Join-Path $env:GITHUB_WORKSPACE 'installer\setup.iss'
+          $output = Join-Path $env:GITHUB_WORKSPACE 'installer\Output'
+          New-Item -ItemType Directory -Force -Path $output | Out-Null
+          & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' "/Qp" "/O$output" $iss
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vless-vpn-client-installer
+          path: installer/Output/*.exe

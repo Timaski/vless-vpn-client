@@ -1,0 +1,36 @@
+# .NET
+bin/
+obj/
+out/
+*.user
+*.suo
+*.userprefs
+.vs/
+.vscode/
+.idea/
+
+# Build artifacts
+*.dll
+*.exe
+*.pdb
+*.cache
+TestResults/
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+
+# Inno Setup output
+installer/Output/
+installer/*.exe
+
+# Bundled xray (downloaded at install time, not committed)
+xray.exe
+xray
+geosite.dat
+geoip.dat
+
+# Local dev
+*.log
+local/

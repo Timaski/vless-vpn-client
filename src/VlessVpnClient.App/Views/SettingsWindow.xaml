@@ -1,0 +1,181 @@
+<Window x:Class="VlessVpnClient.App.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TYU HUB :: НАСТРОЙКИ"
+        Width="720" Height="700"
+        Background="{DynamicResource BackgroundBrush}"
+        Foreground="{DynamicResource ForegroundBrush}"
+        FontFamily="{DynamicResource MonoFont}"
+        FontSize="13"
+        WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource AccentBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="20,14">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource PromptText}" Text="&gt; " />
+                    <TextBlock Style="{StaticResource HeaderText}" FontSize="18" Text="НАСТРОЙКИ" />
+                </StackPanel>
+                <TextBlock Style="{StaticResource MutedText}" Margin="0,4,0,0"
+                           Text="// подключение, запуск, отображение и подписки" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20,16">
+            <StackPanel>
+
+                <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SubheaderText}" Text="// СОЕДИНЕНИЕ" Margin="0,0,0,12" />
+
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="режим прокси" VerticalAlignment="Center" />
+                            <ComboBox Grid.Column="1" x:Name="ProxyModeBox" MaxWidth="320" HorizontalAlignment="Left" MinWidth="240">
+                                <ComboBoxItem Content="системный прокси (HTTP/SOCKS)" />
+                                <ComboBoxItem Content="только слушать (вручную)" />
+                            </ComboBox>
+                        </Grid>
+
+                        <Border Background="{DynamicResource SurfaceAltBrush}" Padding="14,10" Margin="0,14,0,0">
+                            <StackPanel>
+                                <CheckBox x:Name="EnableHttpBox" Content="включить HTTP inbound" />
+                                <Grid Margin="30,4,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="HTTP порт" VerticalAlignment="Center" Foreground="{DynamicResource MutedForegroundBrush}" />
+                                    <TextBox Grid.Column="1" x:Name="HttpPortBox" MaxWidth="120" HorizontalAlignment="Left" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="{DynamicResource SurfaceAltBrush}" Padding="14,10" Margin="0,8,0,0">
+                            <StackPanel>
+                                <CheckBox x:Name="EnableSocksBox" Content="включить SOCKS inbound" />
+                                <Grid Margin="30,4,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="SOCKS порт" VerticalAlignment="Center" Foreground="{DynamicResource MutedForegroundBrush}" />
+                                    <TextBox Grid.Column="1" x:Name="SocksPortBox" MaxWidth="120" HorizontalAlignment="Left" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <CheckBox x:Name="BypassLanBox" Margin="0,14,0,0"
+                                  Content="не проксировать локальную сеть (LAN bypass)" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SubheaderText}" Text="// ЗАПУСК" Margin="0,0,0,12" />
+                        <CheckBox x:Name="AutoStartBox" Content="запускать вместе с Windows" />
+                        <CheckBox x:Name="StartMinimizedBox" Content="стартовать свёрнутым в трей" />
+                        <CheckBox x:Name="ConnectOnStartBox" Content="авто-подключение к последнему серверу" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SubheaderText}" Text="// ВИД" Margin="0,0,0,12" />
+
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="тема" VerticalAlignment="Center" />
+                            <ComboBox Grid.Column="1" x:Name="ThemeBox" MinWidth="240" MaxWidth="320" HorizontalAlignment="Left">
+                                <ComboBoxItem Content="фосфор-зелёный (тёмная)" />
+                                <ComboBoxItem Content="янтарный (светлая)" />
+                            </ComboBox>
+                        </Grid>
+
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="лог-уровень xray" VerticalAlignment="Center" />
+                            <ComboBox Grid.Column="1" x:Name="LogLevelBox" MinWidth="240" MaxWidth="320" HorizontalAlignment="Left">
+                                <ComboBoxItem Content="debug" />
+                                <ComboBoxItem Content="info" />
+                                <ComboBoxItem Content="warning" />
+                                <ComboBoxItem Content="error" />
+                                <ComboBoxItem Content="none" />
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}" Margin="0,0,0,14">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SubheaderText}" Text="// ПИНГ" Margin="0,0,0,12" />
+
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="URL для real-delay" VerticalAlignment="Center" />
+                            <TextBox Grid.Column="1" x:Name="PingUrlBox" />
+                        </Grid>
+
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="таймаут (мс)" VerticalAlignment="Center" />
+                            <TextBox Grid.Column="1" x:Name="PingTimeoutBox" MaxWidth="120" HorizontalAlignment="Left" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SubheaderText}" Text="// ПОДПИСКИ" Margin="0,0,0,12" />
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="user-agent" VerticalAlignment="Center" />
+                            <TextBox Grid.Column="1" x:Name="UserAgentBox" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="2"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource AccentBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="20,14">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="[ ОТМЕНА ]" Style="{StaticResource SecondaryButton}" Click="Cancel_Click"
+                        MinWidth="120" Margin="0,0,8,0" />
+                <Button Content="[ СОХРАНИТЬ ]" Style="{StaticResource PrimaryButton}" Click="Save_Click"
+                        MinWidth="140" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
