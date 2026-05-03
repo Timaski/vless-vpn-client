@@ -5,8 +5,8 @@ namespace VlessVpnClient.App.Converters;
 
 public sealed class ConnectionStatusTextConverter : IValueConverter
 {
-    public string ConnectedText { get; set; } = "Подключено";
-    public string DisconnectedText { get; set; } = "Отключено";
+    public string ConnectedText { get; set; } = "ONLINE";
+    public string DisconnectedText { get; set; } = "OFFLINE";
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

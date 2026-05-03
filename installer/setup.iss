@@ -2,8 +2,8 @@
 ; Builds an installer that bundles the published app and downloads
 ; the latest xray-core release on first run (or right after install).
 
-#define AppName "VLESS VPN Client"
-#define AppShortName "VlessVpnClient"
+#define AppName "TYU HUB"
+#define AppShortName "TyuHub"
 #define AppVersion "1.0.0"
 #define AppPublisher "Timaski"
 #define AppExeName "VlessVpnClient.exe"
@@ -24,7 +24,7 @@ ArchitecturesInstallIn64BitMode=x64compatible
 ArchitecturesAllowed=x64compatible
 PrivilegesRequired=admin
 PrivilegesRequiredOverridesAllowed=dialog commandline
-OutputBaseFilename=VlessVpnClient-Setup-{#AppVersion}
+OutputBaseFilename=TyuHub-Setup-{#AppVersion}
 Compression=lzma2/ultra
 SolidCompression=yes
 WizardStyle=modern
