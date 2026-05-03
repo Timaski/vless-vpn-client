@@ -62,6 +62,7 @@
                         </StackPanel>
                         <TextBlock Style="{StaticResource MutedText}"
                                    Text="VLESS GATEWAY :: xray-core" />
+
                     </StackPanel>
                 </StackPanel>
 
@@ -69,14 +70,14 @@
                     <Button Style="{StaticResource SecondaryButton}"
                             Click="OnLogsClick"
                             Padding="12,6"
-                            ToolTip="Системные логи"
-                            Content="[ LOGS ]" />
+                            ToolTip="Открыть логи"
+                            Content="[ ЛОГИ ]" />
                     <Button Style="{StaticResource SecondaryButton}"
                             Click="OnSettingsClick"
                             Margin="6,0,0,0"
                             Padding="12,6"
-                            ToolTip="Конфигурация"
-                            Content="[ CONFIG ]" />
+                            ToolTip="Открыть настройки"
+                            Content="[ НАСТРОЙКИ ]" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -101,25 +102,25 @@
                     <Button Grid.Column="0"
                             Style="{StaticResource HeroConnectButton}"
                             Click="OnHeroToggleClick"
-                            ToolTip="Tunnel toggle"
+                            ToolTip="Подключить / отключить"
                             VerticalAlignment="Center">
                         <Grid>
                             <StackPanel Visibility="{Binding Connection.IsConnected, Converter={StaticResource InvertedBoolToVisibility}}"
                                         HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="[ CONNECT ]"
+                                <TextBlock Text="[ ПОДКЛЮЧИТЬ ]"
                                            FontSize="18" FontWeight="Bold"
                                            HorizontalAlignment="Center" />
-                                <TextBlock Text="press to dial"
+                                <TextBlock Text="нажмите для вызова"
                                            Foreground="{DynamicResource MutedForegroundBrush}"
                                            FontSize="11" Margin="0,6,0,0"
                                            HorizontalAlignment="Center" />
                             </StackPanel>
                             <StackPanel Visibility="{Binding Connection.IsConnected, Converter={StaticResource BoolToVisibility}}"
                                         HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="[ DISCONNECT ]"
+                                <TextBlock Text="[ ОТКЛЮЧИТЬ ]"
                                            FontSize="18" FontWeight="Bold"
                                            HorizontalAlignment="Center" />
-                                <TextBlock Text="tunnel active"
+                                <TextBlock Text="тоннель активен"
                                            Foreground="{DynamicResource MutedForegroundBrush}"
                                            FontSize="11" Margin="0,6,0,0"
                                            HorizontalAlignment="Center" />
@@ -130,7 +131,7 @@
                     <!-- Status block -->
                     <StackPanel Grid.Column="1" Margin="28,0,0,0" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Style="{StaticResource PromptText}" Text="STATUS: " />
+                            <TextBlock Style="{StaticResource PromptText}" Text="СТАТУС: " />
                             <TextBlock Text="["
                                        Style="{StaticResource SubheaderText}"
                                        Foreground="{Binding Connection.IsConnected, Converter={StaticResource ConnectionStatusBrush}}" />
@@ -159,19 +160,19 @@
                         </StackPanel>
                         <TextBlock Margin="0,8,0,0"
                                    Style="{StaticResource MutedText}"
-                                   Text="{Binding StatusMessage, FallbackValue='No active link. Idle.'}"
+                                   Text="{Binding StatusMessage, FallbackValue='Нет активного подключения'}"
                                    TextWrapping="Wrap" />
                         <TextBlock Margin="0,2,0,0"
                                    Style="{StaticResource MutedText}"
                                    FontSize="11"
-                                   Text="{Binding Connection.ActiveProfile.DisplayName, StringFormat='node :: {0}', FallbackValue=''}" />
+                                   Text="{Binding Connection.ActiveProfile.DisplayName, StringFormat='сервер :: {0}', FallbackValue=''}" />
                     </StackPanel>
 
                     <!-- Stats -->
                     <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
                         <TextBlock Style="{StaticResource SectionLabel}"
                                    HorizontalAlignment="Right"
-                                   Text="// SYSTEM" />
+                                   Text="// СИСТЕМА" />
                         <Grid HorizontalAlignment="Right">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -182,7 +183,7 @@
                                            Text="{Binding Profiles.Count, StringFormat={}{0:000}}"
                                            FontSize="22" FontWeight="Bold"
                                            HorizontalAlignment="Right" />
-                                <TextBlock Text="NODES"
+                                <TextBlock Text="СЕРВЕРЫ"
                                            Style="{StaticResource SectionLabel}"
                                            Margin="0"
                                            HorizontalAlignment="Right" />
@@ -192,7 +193,7 @@
                                            Text="{Binding Subscriptions.Count, StringFormat={}{0:000}}"
                                            FontSize="22" FontWeight="Bold"
                                            HorizontalAlignment="Right" />
-                                <TextBlock Text="FEEDS"
+                                <TextBlock Text="ПОДПИСКИ"
                                            Style="{StaticResource SectionLabel}"
                                            Margin="0"
                                            HorizontalAlignment="Right" />
@@ -214,34 +215,34 @@
                         <Button Style="{StaticResource PrimaryButton}"
                                 Click="OnImportClick"
                                 Margin="0,0,8,0"
-                                Content="[ + IMPORT ]" />
+                                Content="[ + ИМПОРТ ]" />
                         <Button Style="{StaticResource SecondaryButton}"
                                 Click="OnSubscriptionsClick"
                                 Margin="0,0,8,0"
-                                ToolTip="Subscription feeds"
-                                Content="[ FEEDS ]" />
+                                ToolTip="Управление подписками"
+                                Content="[ ПОДПИСКИ ]" />
                         <Button Style="{StaticResource SecondaryButton}"
                                 Command="{Binding RefreshSubscriptionsCommand}"
                                 Margin="0,0,8,0"
-                                ToolTip="Refresh subscriptions"
-                                Content="[ &lt;&gt; SYNC ]" />
+                                ToolTip="Обновить все подписки"
+                                Content="[ ОБНОВИТЬ ]" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button Style="{StaticResource SecondaryButton}"
                                 Command="{Binding PingAllCommand}"
                                 Margin="0,0,8,0"
-                                ToolTip="Probe all nodes"
-                                Content="[ ~ PING ]" />
+                                ToolTip="Замерить пинг всех серверов"
+                                Content="[ ПИНГ ]" />
                         <Button Style="{StaticResource SecondaryButton}"
                                 Click="OnSortByLatencyClick"
                                 Margin="0,0,8,0"
-                                ToolTip="Sort by latency"
-                                Content="[ ^ SORT ]" />
+                                ToolTip="Сортировать по пингу"
+                                Content="[ СОРТ ]" />
                         <Button Style="{StaticResource DangerButton}"
                                 Command="{Binding DeleteProfileCommand}"
-                                ToolTip="Delete selected node"
-                                Content="[ X DROP ]" />
+                                ToolTip="Удалить выбранный сервер"
+                                Content="[ УДАЛИТЬ ]" />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -273,7 +274,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="NODE" Width="2*">
+                            <DataGridTemplateColumn Header="ИМЯ" Width="2*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding DisplayName}"
@@ -283,7 +284,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="HOST" Width="2*">
+                            <DataGridTemplateColumn Header="АДРЕС" Width="2*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Address}"
@@ -293,7 +294,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="NET" Width="100">
+                            <DataGridTemplateColumn Header="СЕТЬ" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Network}"
@@ -303,7 +304,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="SEC" Width="120">
+                            <DataGridTemplateColumn Header="ШИФР" Width="120">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Security}"
@@ -313,7 +314,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="MS" Width="130">
+                            <DataGridTemplateColumn Header="ПИНГ" Width="130">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding LatencyText}"
@@ -337,21 +338,21 @@
                                    HorizontalAlignment="Center">
 <Run Text="+----------------------------+" />
 <LineBreak/>
-<Run Text="|        NO NODES FOUND      |" />
+<Run Text="|       СЕРВЕРОВ НЕТ        |" />
 <LineBreak/>
-<Run Text="|     awaiting input ...     |" />
+<Run Text="|       ждём ввода ...      |" />
 <LineBreak/>
 <Run Text="+----------------------------+" />
                         </TextBlock>
                         <TextBlock Style="{StaticResource MutedText}"
                                    Margin="0,18,0,0"
-                                   Text="paste vless:// URL or subscription via [ + IMPORT ]"
+                                   Text="вставьте vless:// URL или подписку через [ + ИМПОРТ ]"
                                    HorizontalAlignment="Center" />
                         <Button Style="{StaticResource PrimaryButton}"
                                 Click="OnImportClick"
                                 Margin="0,18,0,0"
                                 HorizontalAlignment="Center"
-                                Content="[ + IMPORT NODE ]" />
+                                Content="[ + ДОБАВИТЬ СЕРВЕР ]" />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -373,7 +374,7 @@
                                FontSize="11" FontWeight="Bold" Text="$ " />
                     <TextBlock Style="{StaticResource MutedText}"
                                FontSize="11"
-                               Text="{Binding StatusMessage, FallbackValue='ready.'}"
+                               Text="{Binding StatusMessage, FallbackValue='готов.'}"
                                VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
