@@ -1,0 +1,199 @@
+<Window x:Class="VlessVpnClient.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:VlessVpnClient.App.ViewModels"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        Title="VLESS VPN Client"
+        Width="980" Height="640"
+        MinWidth="700" MinHeight="420"
+        Background="{DynamicResource BackgroundBrush}"
+        Foreground="{DynamicResource ForegroundBrush}"
+        FontFamily="Segoe UI"
+        FontSize="13"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="Border" x:Key="Card">
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="14" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <tb:TaskbarIcon x:Name="Tray"
+                        IconSource="/Resources/app.ico"
+                        ToolTipText="VLESS VPN Client"
+                        TrayMouseDoubleClick="Tray_MouseDoubleClick">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Показать" Click="MenuShow_Click" />
+                    <Separator />
+                    <MenuItem x:Name="TrayConnectMenu" Header="Подключить" Click="MenuConnect_Click" />
+                    <MenuItem x:Name="TrayDisconnectMenu" Header="Отключить" Click="MenuDisconnect_Click" />
+                    <Separator />
+                    <MenuItem Header="Выход" Click="MenuExit_Click" />
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+
+        <!-- Header / connection panel -->
+        <Border Grid.Row="0" Style="{StaticResource Card}" Margin="14,14,14,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Width="44" Height="44"
+                        CornerRadius="22"
+                        Background="{Binding Connection.IsConnected, Converter={StaticResource ConnectionStatusBrush}}">
+                    <TextBlock Text="VLESS"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               FontSize="11"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Border>
+
+                <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="VLESS VPN Client" FontSize="18" FontWeight="SemiBold" />
+                    <TextBlock x:Name="StatusLine"
+                               Foreground="{DynamicResource MutedForegroundBrush}"
+                               Text="{Binding StatusMessage, FallbackValue='Готов к подключению'}" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="ConnectButton"
+                            Style="{StaticResource PrimaryButton}"
+                            Content="Подключить"
+                            Width="120"
+                            Margin="0,0,8,0"
+                            Command="{Binding ConnectCommand}"
+                            Visibility="{Binding Connection.IsConnected, Converter={StaticResource InvertedBoolToVisibility}}" />
+                    <Button x:Name="DisconnectButton"
+                            Style="{StaticResource PrimaryButton}"
+                            Content="Отключить"
+                            Width="120"
+                            Margin="0,0,8,0"
+                            Background="{DynamicResource DangerBrush}"
+                            Command="{Binding DisconnectCommand}"
+                            Visibility="{Binding Connection.IsConnected, Converter={StaticResource BoolToVisibility}}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Toolbar -->
+        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="14,14,14,0">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Импорт VLESS / подписки"
+                        Style="{StaticResource SecondaryButton}"
+                        Click="OnImportClick"
+                        Margin="0,0,8,0" />
+                <Button Content="Подписки"
+                        Style="{StaticResource SecondaryButton}"
+                        Click="OnSubscriptionsClick"
+                        Margin="0,0,8,0" />
+                <Button Content="Тест пинга"
+                        Style="{StaticResource SecondaryButton}"
+                        Command="{Binding PingAllCommand}"
+                        Margin="0,0,8,0" />
+                <Button Content="Сорт. по пингу"
+                        Style="{StaticResource SecondaryButton}"
+                        Click="OnSortByLatencyClick"
+                        Margin="0,0,8,0" />
+                <Button Content="Обновить подписки"
+                        Style="{StaticResource SecondaryButton}"
+                        Command="{Binding RefreshSubscriptionsCommand}"
+                        Margin="0,0,8,0" />
+                <Button Content="Логи"
+                        Style="{StaticResource SecondaryButton}"
+                        Click="OnLogsClick"
+                        Margin="0,0,8,0" />
+                <Button Content="Настройки"
+                        Style="{StaticResource SecondaryButton}"
+                        Click="OnSettingsClick"
+                        Margin="0,0,8,0" />
+                <Button Content="Удалить выбранный"
+                        Style="{StaticResource SecondaryButton}"
+                        Command="{Binding DeleteProfileCommand}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Server list -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="14,14,14,0">
+            <DataGrid x:Name="ProfilesGrid"
+                      ItemsSource="{Binding Profiles}"
+                      SelectedItem="{Binding SelectedProfile, Mode=TwoWay}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow"
+                      MouseDoubleClick="ProfilesGrid_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="" Width="34">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Width="10" Height="10" CornerRadius="5"
+                                        HorizontalAlignment="Center"
+                                        Background="{DynamicResource SuccessBrush}"
+                                        Visibility="{Binding IsActive, Converter={StaticResource BoolToVisibility}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Имя" Binding="{Binding DisplayName}" Width="2*" />
+                    <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="2*" />
+                    <DataGridTextColumn Header="Сеть" Binding="{Binding Network}" Width="80" />
+                    <DataGridTextColumn Header="Безопасн." Binding="{Binding Security}" Width="100" />
+                    <DataGridTemplateColumn Header="Пинг" Width="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="8" Height="8" CornerRadius="4"
+                                            VerticalAlignment="Center"
+                                            Margin="0,0,8,0"
+                                            Background="{Binding LatencyValue, Converter={StaticResource LatencyToBrush}}" />
+                                    <TextBlock Text="{Binding LatencyText}" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <!-- Status bar -->
+        <Border Grid.Row="3" Background="{DynamicResource SurfaceAltBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="14,8" Margin="0,14,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Foreground="{DynamicResource MutedForegroundBrush}"
+                           Text="{Binding StatusMessage, FallbackValue='Готов'}" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Foreground="{DynamicResource MutedForegroundBrush}"
+                               Text="{Binding Profiles.Count, StringFormat='Серверов: {0}'}"
+                               Margin="0,0,16,0" />
+                    <TextBlock Foreground="{DynamicResource MutedForegroundBrush}"
+                               Text="{Binding Subscriptions.Count, StringFormat='Подписок: {0}'}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
