@@ -352,7 +352,7 @@
                                                     Background="{Binding LatencyValue, Converter={StaticResource LatencyToBrush}}" />
                                             <TextBlock Text="{Binding LatencyText}"
                                                        VerticalAlignment="Center"
-                                                       FontVariantNumeric="Tabular" />
+                                                       Typography.NumeralAlignment="Tabular" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
